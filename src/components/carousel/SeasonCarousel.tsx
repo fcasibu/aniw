@@ -8,7 +8,13 @@ import 'swiper/css/a11y';
 import 'swiper/css/autoplay';
 import 'swiper/css/pagination';
 import { A11y, Autoplay, Pagination } from 'swiper/modules';
-import { AniLink, Button, ImageWithFallback } from '..';
+import {
+  AniLink,
+  Button,
+  ImageWithFallback,
+  TypographyH2,
+  TypographyPara,
+} from '..';
 
 const AUTOPLAY_DELAY_IN_MS = 7000;
 
@@ -53,8 +59,10 @@ export function SeasonCarousel({ carouselItems }: CarouselProps) {
           </div>
           <div className="absolute bottom-6 left-4 z-10 flex max-w-xs flex-col gap-3">
             <div className="select-none">
-              <h2 className="line-clamp-2 text-xl font-bold">{item.title}</h2>
-              <p className="line-clamp-2 text-sm">{item.synopsis}</p>
+              <TypographyH2 className="line-clamp-2">{item.title}</TypographyH2>
+              <TypographyPara className="line-clamp-2">
+                {item.synopsis}
+              </TypographyPara>
             </div>
             <Button asChild>Hi</Button>
             <AniLink
