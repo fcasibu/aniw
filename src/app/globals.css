@@ -10,6 +10,6 @@
 
 @layer base {
   body {
-    @apply bg-neutral-900 leading-normal text-white;
+    @apply bg-zinc-950 leading-normal text-white;
   }
 }

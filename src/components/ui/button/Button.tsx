@@ -17,7 +17,7 @@ export const buttonVariants = cva(
         outline:
           'border border-white focus-visible:bg-purple-100 hover:bg-purple-100 focus-visible:text-purple-900 hover:text-purple-900 dark:border-purple-800 dark:hover:bg-purple-800 dark:focus-visible:bg-purple-800 dark:focus-visible:text-purple-50 dark:hover:text-purple-50',
         secondary:
-          'bg-neutral-800 text-neutral-50 focus-visible:bg-purple-800 hover:bg-purple-800 dark:bg-neutral-50 dark:text-neutral-800 dark:focus-visible:bg-purple-800/80 dark:hover:bg-purple-800/80 dark:focus-visible:text-purple-50 dark:hover:text-purple-50',
+          'bg-zinc-800 text-zinc-50 focus-visible:bg-purple-800 hover:bg-purple-800 dark:bg-zinc-50 dark:text-zinc-800 dark:focus-visible:bg-purple-800/80 dark:hover:bg-purple-800/80 dark:focus-visible:text-purple-50 dark:hover:text-purple-50',
         ghost:
           'focus-visible:bg-purple-100 hover:bg-purple-100 focus-visible:text-purple-900 hover:text-purple-900 dark:focus-visible:bg-purple-800 dark:hover:bg-purple-800 dark:focus-visible:text-purple-50 dark:hover:text-purple-50',
       },

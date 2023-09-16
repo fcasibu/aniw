@@ -4,8 +4,8 @@ import { ArrowLeft } from 'lucide-react';
 export default function NotFound() {
   return (
     <section className="flex h-screen flex-col items-center justify-center gap-3">
-      <TypographyH1 className="text-neutral-200">Not Found</TypographyH1>
-      <TypographyPara className="text-neutral-400">
+      <TypographyH1 className="text-zinc-200">Not Found</TypographyH1>
+      <TypographyPara className="text-zinc-400">
         Could not find requested resource
       </TypographyPara>
       <AniLink href="/" className="group gap-1" size="sm">

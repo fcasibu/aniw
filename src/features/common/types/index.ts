@@ -4,12 +4,15 @@ export type ImageURLs = {
   small_image_url: string;
 };
 
-export type SeasonNow = {
+export type Anime = {
+  title: string;
+  synopsis: string;
   images: {
     jpg: ImageURLs;
     webp: ImageURLs;
   };
-  title: string;
+  score: number;
+  type: string;
+  year: number;
   url: string;
-  synopsis: string;
 };
