@@ -2,9 +2,7 @@
 
 import { MenuIcon, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type {
-  DropdownMenuTriggerHandle,
-  DropdownState} from '..';
+import type { DropdownMenuTriggerHandle, DropdownState } from '..';
 import {
   AniLink,
   DropdownMenu,
@@ -12,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '..';
 
 const menuItems = [
