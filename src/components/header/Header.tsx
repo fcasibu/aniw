@@ -6,7 +6,7 @@ import { NavigationSearch } from './NavigationSearch';
 
 export function Header() {
   return (
-    <header className="relative z-50 bg-zinc-900 p-2">
+    <header className="sticky top-0 z-50 bg-zinc-900 p-2">
       <div className="mx-auto flex max-w-7xl items-center justify-between ">
         <div className="flex items-center gap-3">
           <Menu />
