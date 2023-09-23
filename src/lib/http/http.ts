@@ -1,5 +1,4 @@
 import { SERVER_URL } from '@/constants';
-import { logger } from '@/utils';
 import { RateLimit } from 'async-sema';
 import type { BasicHandler, HTTPClient, HTTPHandlers } from '.';
 
@@ -27,7 +26,9 @@ const createHTTPClient = (
           const { data } = await response.json();
           return data;
         } catch (error) {
-          logger.debug({ error }, `METHOD: ${methodName.toUpperCase()}`);
+          if (process.env.NODE_ENV !== 'test') {
+            console.error(error);
+          }
           throw error;
         }
       },
