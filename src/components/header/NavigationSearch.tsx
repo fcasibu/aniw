@@ -3,6 +3,7 @@
 import { ONE_SECOND_IN_MS } from '@/constants';
 import type { Anime } from '@/features';
 import { useAnimeSearch } from '@/features';
+import { useMatchWindowSize } from '@/hooks';
 import { present } from '@/utils';
 import {
   ArrowRightIcon,
@@ -35,6 +36,7 @@ export function NavigationSearch() {
   const { isLoading, items, getAnime } = useAnimeSearch();
   const searchBarRef = useRef<HTMLDivElement>(null);
   const [query] = useDebouncedValue(value, ONE_SECOND_IN_MS);
+  const isDesktop = useMatchWindowSize('lg');
 
   const handleOpen = () => setIsSearchOpen(true);
   const handleClose = () => setIsSearchOpen(false);
@@ -45,9 +47,9 @@ export function NavigationSearch() {
       event.preventDefault();
       handleOpen();
     },
-    { when: !isSearchOpen },
+    { when: isDesktop && !isSearchOpen },
   );
-  useKeys(['Escape'], handleClose, { when: isSearchOpen });
+  useKeys(['Escape'], handleClose, { when: isDesktop && isSearchOpen });
   useOutsideClick(searchBarRef, handleClose, isSearchOpen);
 
   useEffect(() => {
@@ -58,9 +60,11 @@ export function NavigationSearch() {
 
   return (
     <div className="relative flex gap-2">
-      <div className="flex select-none items-center gap-1 text-xs text-zinc-500">
-        <CommandIcon aria-hidden size={12} />+ C
-      </div>
+      {isDesktop && (
+        <div className="flex select-none items-center gap-1 text-xs text-zinc-500">
+          <CommandIcon aria-hidden size={12} />+ C
+        </div>
+      )}
       <button
         type="button"
         aria-label="Open Search"

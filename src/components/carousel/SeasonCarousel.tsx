@@ -2,6 +2,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { Anime } from '@/features';
+import { useMatchWindowSize } from '@/hooks';
 import { Play } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/a11y';
@@ -23,6 +24,8 @@ export type CarouselProps = {
 };
 
 export function SeasonCarousel({ carouselItems }: CarouselProps) {
+  const isDesktop = useMatchWindowSize('lg');
+
   return (
     <Swiper
       modules={[A11y, Autoplay, Pagination]}
@@ -32,7 +35,7 @@ export function SeasonCarousel({ carouselItems }: CarouselProps) {
         pauseOnMouseEnter: true,
       }}
       pagination={{
-        enabled: true,
+        enabled: isDesktop,
         clickable: true,
         bulletClass: '!bg-white swiper-pagination-bullet',
         // clickable must be true
