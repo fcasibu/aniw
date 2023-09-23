@@ -1,5 +1,3 @@
-'use client';
-
 import { AniLink, Logo } from '..';
 import { Menu } from './Menu';
 import { NavigationSearch } from './NavigationSearch';
