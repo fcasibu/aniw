@@ -17,17 +17,8 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <a
-          href="#main-content"
-          className="sr-only !fixed left-2 top-2 z-10 !p-1 focus:not-sr-only"
-        >
-          Skip to main content
-        </a>
         <Header />
-        <main
-          id="main-content"
-          className="mx-auto flex max-w-7xl flex-col gap-5"
-        >
+        <main className="mx-auto flex max-w-7xl flex-col gap-5">
           {children}
         </main>
       </body>
