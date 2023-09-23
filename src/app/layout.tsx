@@ -24,7 +24,10 @@ export default function Layout({ children }: LayoutProps) {
           Skip to main content
         </a>
         <Header />
-        <main id="main-content" className="mx-auto max-w-7xl">
+        <main
+          id="main-content"
+          className="mx-auto flex max-w-7xl flex-col gap-5"
+        >
           {children}
         </main>
       </body>

@@ -1,7 +1,7 @@
 'use client';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { SeasonNow } from '@/features';
+import type { Anime } from '@/features';
 import { Play } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/a11y';
@@ -19,7 +19,7 @@ import {
 const AUTOPLAY_DELAY_IN_MS = 7000;
 
 export type CarouselProps = {
-  carouselItems: SeasonNow[];
+  carouselItems: Anime[];
 };
 
 export function SeasonCarousel({ carouselItems }: CarouselProps) {
@@ -46,7 +46,7 @@ export function SeasonCarousel({ carouselItems }: CarouselProps) {
     >
       {carouselItems.map((item, index) => (
         <SwiperSlide key={item.title} className="relative text-white">
-          <div className="relative aspect-video max-h-[35rem] min-h-[20rem] w-full">
+          <div className="relative aspect-[2/3] max-h-[35rem] w-full">
             <div className="bg absolute z-10 h-full w-full bg-gradient-to-r from-black from-15% opacity-90" />
             <ImageWithFallback
               aria-hidden
