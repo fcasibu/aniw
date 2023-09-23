@@ -3,10 +3,17 @@
 import { ONE_SECOND_IN_MS } from '@/constants';
 import type { Anime } from '@/features';
 import { useAnimeSearch } from '@/features';
-import { ArrowRightIcon, FilterIcon, SearchIcon, StarIcon } from 'lucide-react';
+import { present } from '@/utils';
+import {
+  ArrowRightIcon,
+  CommandIcon,
+  FilterIcon,
+  SearchIcon,
+  StarIcon,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useDebouncedValue, useOutsideClick } from 'rooks';
+import { useDebouncedValue, useKeys, useOutsideClick } from 'rooks';
 import {
   AniLink,
   Command,
@@ -17,8 +24,8 @@ import {
   CommandList,
   CommandLoading,
   CommandSeparator,
-  DotSeparator,
   ImageWithFallback,
+  Separate,
   TypographyPara,
 } from '..';
 
@@ -29,23 +36,36 @@ export function NavigationSearch() {
   const searchBarRef = useRef<HTMLDivElement>(null);
   const [query] = useDebouncedValue(value, ONE_SECOND_IN_MS);
 
+  const handleOpen = () => setIsSearchOpen(true);
+  const handleClose = () => setIsSearchOpen(false);
+
+  useKeys(
+    ['MetaLeft', 'KeyC'],
+    (event) => {
+      event.preventDefault();
+      handleOpen();
+    },
+    { when: !isSearchOpen },
+  );
+  useKeys(['Escape'], handleClose, { when: isSearchOpen });
+  useOutsideClick(searchBarRef, handleClose, isSearchOpen);
+
   useEffect(() => {
     (async () => {
       if (query.length >= 2) await getAnime(query);
     })();
   }, [query, getAnime]);
 
-  const handleClick = () => setIsSearchOpen(true);
-
-  useOutsideClick(searchBarRef, () => setIsSearchOpen(false), isSearchOpen);
-
   return (
-    <div className="relative flex">
+    <div className="relative flex gap-2">
+      <div className="flex select-none items-center gap-1 text-xs text-zinc-500">
+        <CommandIcon aria-hidden size={12} />+ C
+      </div>
       <button
         type="button"
         aria-label="Open Search"
         className="self-center"
-        onClick={handleClick}
+        onClick={handleOpen}
       >
         <SearchIcon aria-hidden size={20} />
       </button>
@@ -103,16 +123,27 @@ function SearchItem({ title, year, images, score, type, url }: Anime) {
       <div className="flex flex-col gap-1 text-zinc-200">
         <TypographyPara className="line-clamp-1">{title}</TypographyPara>
         <div className="flex items-center gap-1 text-xs text-zinc-400">
-          {score && (
-            <span className="flex gap-1">
-              <StarIcon aria-hidden size={14} className="fill-current" />
-              {score.toFixed(2)}
-            </span>
-          )}
-          {type && score && <DotSeparator size={15} />}
-          {type && <span>{type.toUpperCase()}</span>}
-          {year && (score || type) && <DotSeparator size={15} />}
-          {year && <span>{year}</span>}
+          <Separate separator="minus" className="text-xs text-zinc-400">
+            {present(score) && (
+              <span className="flex gap-1">
+                <StarIcon aria-hidden size={14} className="fill-current" />
+                <span className="sr-only">Score: </span>
+                {score.toFixed(2)}
+              </span>
+            )}
+            {present(type) && (
+              <span>
+                <span className="sr-only">Type: </span>
+                {type.toUpperCase()}
+              </span>
+            )}
+            {present(year) && (
+              <span>
+                <span className="sr-only">Year: </span>
+                {year}
+              </span>
+            )}
+          </Separate>
         </div>
       </div>
     </AniLink>
