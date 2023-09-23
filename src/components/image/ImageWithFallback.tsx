@@ -11,7 +11,7 @@ export function ImageWithFallback({ alt, ...props }: ImageProps) {
   return !error ? (
     <Image {...props} alt={alt} onError={() => setError(true)} />
   ) : (
-    <div className="h-full w-full bg-slate-800 brightness-75">
+    <div className="absolute h-full w-full bg-slate-800 brightness-75">
       <ImageOff aria-hidden className="inset-center opacity-25" size={100} />
     </div>
   );
