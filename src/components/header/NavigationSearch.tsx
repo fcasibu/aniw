@@ -85,10 +85,9 @@ export function NavigationSearch() {
               />
               <CommandList>
                 <CommandGroup heading="Suggestions">
-                  {!isLoading && !items.length && (
-                    <CommandEmpty>No results found.</CommandEmpty>
-                  )}
-                  {isLoading && <CommandLoading />}
+                  <CommandEmpty>
+                    {isLoading ? <CommandLoading /> : 'No results found.'}
+                  </CommandEmpty>
                   {items.map((item) => (
                     <CommandItem value={item.url} key={item.url}>
                       <SearchItem {...item} />
