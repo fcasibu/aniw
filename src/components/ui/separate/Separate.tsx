@@ -22,14 +22,14 @@ type Separator = keyof typeof separatorIcons;
 type SeparateProps = {
   className?: string;
   children: ReactNode[] | ReactNode;
-  separator: Separator;
+  separator?: Separator;
   size?: number;
 };
 
 export function Separate({
   className,
   children,
-  separator,
+  separator = 'dot',
   size = 12,
 }: SeparateProps) {
   return (
@@ -41,7 +41,7 @@ export function Separate({
 
 function separateNodes({
   children: nodes,
-  separator,
+  separator = 'dot',
   size,
 }: Omit<SeparateProps, 'className'>) {
   if (!Array.isArray(nodes)) return nodes;
