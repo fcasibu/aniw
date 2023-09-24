@@ -1,70 +1,88 @@
 import { cn } from '@/utils';
-import type { ComponentProps } from 'react';
+import { forwardRef, type ComponentProps } from 'react';
 
-export const TypographyH1 = ({
-  className,
-  children,
-  ...props
-}: ComponentProps<'h1'>) => (
-  <h1
-    className={cn(
-      'text-3xl font-extrabold tracking-tight first:mt-0',
-      className,
-    )}
-    {...props}
-  >
-    {children}
-  </h1>
+const TypographyH1 = forwardRef<HTMLHeadingElement, ComponentProps<'h1'>>(
+  ({ className, children, ...props }, ref) => (
+    <h1
+      ref={ref}
+      className={cn(
+        'text-3xl font-extrabold tracking-tight first:mt-0',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </h1>
+  ),
 );
 
-export const TypographyH2 = ({
-  className,
-  children,
-  ...props
-}: ComponentProps<'h2'>) => (
-  <h2
-    className={cn(
-      'text-2xl font-semibold tracking-tight first:mt-0',
-      className,
-    )}
-    {...props}
-  >
-    {children}
-  </h2>
+TypographyH1.displayName = 'TypographyH1';
+
+const TypographyH2 = forwardRef<HTMLHeadingElement, ComponentProps<'h2'>>(
+  ({ className, children, ...props }, ref) => (
+    <h2
+      ref={ref}
+      className={cn(
+        'text-2xl font-semibold tracking-tight first:mt-0',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </h2>
+  ),
 );
 
-export const TypographyH3 = ({
-  className,
-  children,
-  ...props
-}: ComponentProps<'h3'>) => (
-  <h3
-    className={cn('text-xl font-semibold tracking-tight first:mt-0', className)}
-    {...props}
-  >
-    {children}
-  </h3>
+TypographyH2.displayName = 'TypographyH2';
+
+const TypographyH3 = forwardRef<HTMLHeadingElement, ComponentProps<'h3'>>(
+  ({ className, children, ...props }, ref) => (
+    <h3
+      ref={ref}
+      className={cn(
+        'text-xl font-semibold tracking-tight first:mt-0',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </h3>
+  ),
 );
 
-export const TypographyH4 = ({
-  className,
-  children,
-  ...props
-}: ComponentProps<'h4'>) => (
-  <h4
-    className={cn('text-lg font-semibold tracking-tight first:mt-0', className)}
-    {...props}
-  >
-    {children}
-  </h4>
+TypographyH3.displayName = 'TypographyH3';
+
+const TypographyH4 = forwardRef<HTMLHeadingElement, ComponentProps<'h4'>>(
+  ({ className, children, ...props }, ref) => (
+    <h4
+      ref={ref}
+      className={cn(
+        'text-lg font-semibold tracking-tight first:mt-0',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </h4>
+  ),
 );
 
-export const TypographyPara = ({
-  className,
-  children,
-  ...props
-}: ComponentProps<'p'>) => (
-  <p className={cn('text-sm leading-7', className)} {...props}>
-    {children}
-  </p>
+TypographyH4.displayName = 'TypographyH4';
+
+const TypographyPara = forwardRef<HTMLParagraphElement, ComponentProps<'p'>>(
+  ({ className, children, ...props }, ref) => (
+    <p ref={ref} className={cn('text-sm leading-7', className)} {...props}>
+      {children}
+    </p>
+  ),
 );
+
+TypographyPara.displayName = 'TypographyPara';
+
+export {
+  TypographyH1,
+  TypographyH2,
+  TypographyH3,
+  TypographyH4,
+  TypographyPara,
+};
