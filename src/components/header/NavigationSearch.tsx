@@ -89,7 +89,11 @@ export function NavigationSearch() {
                     {isLoading ? <CommandLoading /> : 'No results found.'}
                   </CommandEmpty>
                   {items.map((item) => (
-                    <CommandItem value={item.url} key={item.url}>
+                    <CommandItem
+                      value={item.url}
+                      key={item.url}
+                      className="even:bg-zinc-900/30"
+                    >
                       <SearchItem {...item} />
                     </CommandItem>
                   ))}
