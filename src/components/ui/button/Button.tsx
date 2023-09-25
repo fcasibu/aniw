@@ -2,7 +2,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/utils';
-import type { ButtonHTMLAttributes} from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
 export const buttonVariants = cva(
@@ -20,6 +20,7 @@ export const buttonVariants = cva(
           'bg-zinc-800 text-zinc-50 focus-visible:bg-purple-800 hover:bg-purple-800 dark:bg-zinc-50 dark:text-zinc-800 dark:focus-visible:bg-purple-800/80 dark:hover:bg-purple-800/80 dark:focus-visible:text-purple-50 dark:hover:text-purple-50',
         ghost:
           'focus-visible:bg-purple-100 hover:bg-purple-100 focus-visible:text-purple-900 hover:text-purple-900 dark:focus-visible:bg-purple-800 dark:hover:bg-purple-800 dark:focus-visible:text-purple-50 dark:hover:text-purple-50',
+        link: 'hover:underline hover:text-purple-300 focus-visible:underline focus-visible:text-purple-300 text-purple-400 motion-safe:transition-colors',
       },
       size: {
         default: 'rounded-md px-4 py-1',
