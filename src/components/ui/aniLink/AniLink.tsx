@@ -1,5 +1,5 @@
 import { type VariantProps } from 'class-variance-authority';
-import type { ComponentProps} from 'react';
+import type { ComponentProps } from 'react';
 import { forwardRef } from 'react';
 
 import { cn } from '@/utils';
@@ -12,13 +12,32 @@ export type LinkProps = ComponentProps<'a'> &
   VariantProps<typeof buttonVariants>;
 
 export const AniLink = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ className, variant, size, ...props }, ref) => {
+  ({ href, className, variant, size, children, ...props }, ref) => {
+    // TODO: refactor to a more reliable check
+    const isExternal = href.startsWith('http');
+
+    if (isExternal) {
+      return (
+        <a
+          {...props}
+          href={href}
+          target="_blank"
+          className={cn(buttonVariants({ variant, size, className }))}
+        >
+          {children}
+        </a>
+      );
+    }
+
     return (
       <NextLink
         {...props}
+        href={href}
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-      />
+      >
+        {children}
+      </NextLink>
     );
   },
 );

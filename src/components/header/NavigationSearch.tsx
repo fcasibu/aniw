@@ -117,7 +117,6 @@ function SearchItem({ title, year, images, score, type, url }: Anime) {
       href={url}
       variant={null}
       size={null}
-      target="_blank"
       className="relative flex w-full items-start justify-start gap-3"
     >
       <ImageWithFallback
