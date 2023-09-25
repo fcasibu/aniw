@@ -1,8 +1,8 @@
 'use client';
 
 import type { Anime } from '@/features';
-import type { RequestOptions } from '@/lib';
-import { useCallback, useEffect, useState } from 'react';
+import type { Pagination } from '@/lib';
+import { useEffect, useState } from 'react';
 import { getTopAnime } from '..';
 
 export const AnimeFilterType = {
@@ -18,16 +18,38 @@ export const filterTypeKeys = Object.keys(
   AnimeFilterType,
 ) as AnimeFilterTypeKeys[];
 
+export type GetAnimeTypeParams = {
+  type: AnimeFilterTypeKeys;
+  limit?: number;
+  page?: number;
+};
+
 // TODO: use a query library
-export function useGetAnimeType(type: AnimeFilterTypeKeys, limit = 12) {
+export function useGetAnimeType({
+  type,
+  limit = 12,
+  page = 1,
+}: GetAnimeTypeParams) {
   const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState<Anime[]>([]);
+  const [pagination, setPagination] = useState<Pagination>();
 
-  const getAnime = useCallback(
-    async (filter: string, options?: RequestOptions) => {
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    async function getAnimeType() {
+      const filter = AnimeFilterType[type];
       try {
         setIsLoading(true);
-        const { data } = await getTopAnime({ filter, limit }, options);
+        const { data, pagination: paginationData } = await getTopAnime(
+          {
+            filter,
+            limit,
+            page,
+          },
+          { signal: abortController.signal },
+        );
+        setPagination(paginationData);
         setItems(data ?? []);
       } catch (error) {
         if ((error as Error).name !== 'AbortError') {
@@ -36,20 +58,12 @@ export function useGetAnimeType(type: AnimeFilterTypeKeys, limit = 12) {
       } finally {
         setIsLoading(false);
       }
-    },
-    [limit],
-  );
+    }
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    (async () =>
-      await getAnime(AnimeFilterType[type], {
-        signal: abortController.signal,
-      }))();
+    getAnimeType();
 
     return () => abortController.abort();
-  }, [type, getAnime]);
+  }, [type, page, limit]);
 
-  return { isLoading, items };
+  return { isLoading, items, pagination };
 }

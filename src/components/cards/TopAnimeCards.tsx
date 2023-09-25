@@ -2,9 +2,10 @@
 
 import type { AnimeFilterTypeKeys } from '@/features';
 import { filterTypeKeys, useGetAnimeType } from '@/features';
-import { cn } from '@/utils';
+import { cn, createQueryString } from '@/utils';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { AniLink, Separate, TypographyH3 } from '..';
 import { HoverableCard } from './HoverableCard';
 
@@ -24,10 +25,44 @@ const normalizeType = (type: AnimeFilterTypeKeys | null) => {
   ) as AnimeFilterTypeKeys;
 };
 
+const normalizePagination = (page?: string | number | null) => {
+  const pageNum = Number(page);
+  if (pageNum <= 0 || Number.isNaN(pageNum)) return 1;
+
+  return pageNum;
+};
+
 export function TopAnimeCards() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const type = normalizeType(searchParams.get('type') as AnimeFilterTypeKeys);
-  const { items, isLoading } = useGetAnimeType(type, FETCH_LIMIT);
+  const currentPage = normalizePagination(searchParams.get('page'));
+  const { items, isLoading, pagination } = useGetAnimeType({
+    type,
+    limit: FETCH_LIMIT,
+    page: currentPage,
+  });
+
+  useEffect(() => {
+    const lastPage = pagination?.last_visible_page;
+    if (!lastPage) return;
+
+    const params = { page: `${Math.min(currentPage, lastPage)}` };
+
+    if (currentPage > lastPage) {
+      router.push(`${pathname}?${createQueryString(searchParams, params)}`);
+    }
+  }, [
+    currentPage,
+    pagination?.last_visible_page,
+    pathname,
+    searchParams,
+    router,
+  ]);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = !pagination?.has_next_page;
 
   return (
     <div className="flex flex-col gap-3">
@@ -43,34 +78,37 @@ export function TopAnimeCards() {
                 key={title}
                 scroll={false}
                 className={cn(
-                  'pointer-events-none capitalize hover:text-white motion-safe:transition-colors',
+                  "capitalize hover:text-white aria-disabled:pointer-events-none aria-[disabled='false']:text-zinc-400 motion-safe:transition-colors",
                   {
-                    'pointer-events pointer-events-auto text-zinc-400':
-                      title.toLowerCase() !== type,
+                    'opacity-50': title.toLowerCase() !== type,
                   },
                 )}
-                aria-disabled={title.toLowerCase() === type}
-                {...(title.toLowerCase() === type && { tabIndex: -1 })}
               >
                 {title}
               </AniLink>
             ))}
           </Separate>
           <AniLink
-            href={`?type=${type}&page=${1}`}
+            href={`?type=${type}&page=${currentPage - 1}`}
             scroll={false}
             variant={null}
             size={null}
             aria-label="Previous Page"
+            className="capitalize hover:text-white aria-disabled:pointer-events-none aria-disabled:opacity-40 motion-safe:transition-colors"
+            aria-disabled={isFirstPage}
+            {...(isFirstPage && { tabIndex: -1 })}
           >
             <ChevronLeftIcon aria-hidden size={18} />
           </AniLink>
           <AniLink
-            href={`?type=${type}&page=${2}`}
+            href={`?type=${type}&page=${currentPage + 1}`}
             scroll={false}
             variant={null}
             size={null}
             aria-label="Next Page"
+            className="capitalize hover:text-white aria-disabled:pointer-events-none aria-disabled:opacity-40 motion-safe:transition-colors"
+            aria-disabled={isLastPage}
+            {...(isLastPage && { tabIndex: -1 })}
           >
             <ChevronRightIcon aria-hidden size={18} />
           </AniLink>
