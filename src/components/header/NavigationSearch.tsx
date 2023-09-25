@@ -12,6 +12,7 @@ import {
   SearchIcon,
   StarIcon,
 } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useDebouncedValue, useKeys, useOutsideClick } from 'rooks';
@@ -42,7 +43,7 @@ export function NavigationSearch() {
   const handleClose = () => setIsSearchOpen(false);
 
   useKeys(
-    ['MetaLeft', 'KeyC'],
+    ['MetaLeft', 'KeyO'],
     (event) => {
       event.preventDefault();
       handleOpen();
@@ -62,7 +63,7 @@ export function NavigationSearch() {
     <div className="relative flex gap-2">
       {isDesktop && (
         <div className="flex select-none items-center gap-1 text-xs text-zinc-500">
-          <CommandIcon aria-hidden size={12} />+ C
+          <CommandIcon aria-hidden size={12} />+ O
         </div>
       )}
       <button
@@ -75,7 +76,7 @@ export function NavigationSearch() {
       </button>
 
       {isSearchOpen &&
-        createPortal(
+        (createPortal(
           <div className="bg-zinc-900 p-4 pb-2" ref={searchBarRef}>
             <Command className="w-full shadow-md" loop shouldFilter={false}>
               <CommandInput
@@ -92,7 +93,7 @@ export function NavigationSearch() {
                     <CommandItem
                       value={item.url}
                       key={item.url}
-                      className="even:bg-zinc-900/30"
+                      className="odd:bg-zinc-900/30"
                     >
                       <SearchItem {...item} />
                     </CommandItem>
@@ -105,7 +106,7 @@ export function NavigationSearch() {
             <SearchFooter />
           </div>,
           document.getElementById('search-root')!,
-        )}
+        ) as ReactNode)}
     </div>
   );
 }
