@@ -11,8 +11,8 @@ export function useAnimeSearch() {
   const getAnime = useCallback(async (query: string) => {
     try {
       setIsLoading(true);
-      const data = (await getAnimeFromSearch(query)) ?? [];
-      setItems(data);
+      const { data } = await getAnimeFromSearch(query);
+      setItems(data ?? []);
     } catch {
       setItems([]);
     } finally {

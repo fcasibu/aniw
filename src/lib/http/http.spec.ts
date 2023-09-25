@@ -35,7 +35,7 @@ describe('http client', () => {
       Promise.resolve(new Response(JSON.stringify(mockData))),
     );
 
-    const data = await http.get('');
+    const { data } = await http.get('');
 
     expect(mockFn).toHaveBeenCalled();
     expect(data).toEqual(mockData.data);
@@ -59,7 +59,7 @@ describe('http client', () => {
       Promise.resolve(new Response(JSON.stringify(mockData))),
     );
 
-    const data = await http.post('', mockData.data);
+    const { data } = await http.post('', mockData.data);
 
     expect(mockFn).toHaveBeenCalled();
     expect(data).toEqual(mockData.data);

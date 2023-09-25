@@ -2,7 +2,7 @@ import { SeasonCarousel, TopAnimeCards } from '@/components';
 import { getSeasonNow } from '@/features';
 
 export default async function Home() {
-  const seasonNow = await getSeasonNow();
+  const { data: seasonNow } = await getSeasonNow();
 
   return (
     <>

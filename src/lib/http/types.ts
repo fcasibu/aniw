@@ -19,10 +19,19 @@ export type HTTPHandlers = {
   readonly post: HandlerWithData;
 };
 
+export type Pagination = {
+  last_visible_page: number;
+  has_next_page: boolean;
+  items: { count: number; total: number; per_page: number };
+};
+
 export type HTTPClient<THandlers extends HTTPHandlers> = {
   readonly [HandlerName in keyof THandlers]: HandlerName extends keyof HTTPHandlers
-    ? <TData>(
+    ? <
+        TData,
+        ResponseData = { data?: Maybe<TData>; pagination?: Maybe<Pagination> },
+      >(
         ...args: Parameters<THandlers[HandlerName]>
-      ) => Promise<Maybe<TData>>
+      ) => Promise<ResponseData>
     : never;
 };

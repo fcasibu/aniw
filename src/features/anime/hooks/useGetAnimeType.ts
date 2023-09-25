@@ -27,8 +27,8 @@ export function useGetAnimeType(type: AnimeFilterTypeKeys, limit = 12) {
     async (filter: string, options?: RequestOptions) => {
       try {
         setIsLoading(true);
-        const data = (await getTopAnime({ filter, limit }, options)) ?? [];
-        setItems(data);
+        const { data } = await getTopAnime({ filter, limit }, options);
+        setItems(data ?? []);
       } catch (error) {
         if ((error as Error).name !== 'AbortError') {
           setItems([]);

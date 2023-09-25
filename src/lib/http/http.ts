@@ -23,7 +23,7 @@ const createHTTPClient = (
             );
           }
 
-          const { data } = await response.json();
+          const data = await response.json();
           return data;
         } catch (error) {
           if (process.env.NODE_ENV !== 'test') {
