@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import type { Anime } from '@/features';
 import { useMatchWindowSize } from '@/hooks';
+import { breakpoints } from '@/utils';
 import { Play } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/a11y';
@@ -55,7 +56,7 @@ export function SeasonCarousel({ carouselItems }: CarouselProps) {
               aria-hidden
               priority={index === 0}
               src={item.images.webp.large_image_url}
-              sizes="100vw, (min-width: 64em) 50vw"
+              sizes={`100vw, ${breakpoints.lg} 50vw`}
               alt=""
               fill
               className="select-none object-cover"

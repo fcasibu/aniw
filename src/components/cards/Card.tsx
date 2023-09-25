@@ -1,6 +1,6 @@
 'use client';
 
-import { present } from '@/utils';
+import { breakpoints, present } from '@/utils';
 import { PlayIcon, StarIcon } from 'lucide-react';
 import { ImageWithFallback, TypographyPara } from '..';
 import type { CardProps } from './types';
@@ -19,7 +19,7 @@ export function Card({ title, images, score, type }: CardProps) {
             aria-hidden
             src={images.webp.image_url}
             className="group-hover:opacity-50 motion-safe:transition-opacity"
-            sizes="33vw, (min-width: 48em) 25vw, (min-width: 64em) 16vw"
+            sizes={`33vw, ${breakpoints.md} 25vw, ${breakpoints.lg} 16vw`}
             fill
             alt=""
           />
