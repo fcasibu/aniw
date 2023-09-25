@@ -49,12 +49,13 @@ export function SeasonCarousel({ carouselItems }: CarouselProps) {
     >
       {carouselItems.map((item, index) => (
         <SwiperSlide key={item.title} className="relative text-white">
-          <div className="relative aspect-[2/3] max-h-[35rem] w-full">
+          <div className="relative aspect-[4/3] w-full">
             <div className="bg absolute z-10 h-full w-full bg-gradient-to-r from-black from-15% opacity-90" />
             <ImageWithFallback
               aria-hidden
               priority={index === 0}
               src={item.images.webp.large_image_url}
+              sizes="100vw, (min-width: 64em) 50vw"
               alt=""
               fill
               className="select-none object-cover"
