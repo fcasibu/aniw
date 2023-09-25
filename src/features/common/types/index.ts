@@ -4,6 +4,13 @@ export type ImageURLs = {
   small_image_url: string;
 };
 
+type Genre = {
+  mal_id: number;
+  type: string;
+  name: string;
+  url: string;
+};
+
 export type Anime = {
   title: string;
   synopsis: string;
@@ -11,8 +18,16 @@ export type Anime = {
     jpg: ImageURLs;
     webp: ImageURLs;
   };
+  genres: Genre[];
   score: number;
+  scored_by: number;
+  status: string;
   type: string;
-  year: number;
   url: string;
+  season: string;
+  year: number;
+  aired: {
+    from: string;
+    to: string;
+  };
 };
