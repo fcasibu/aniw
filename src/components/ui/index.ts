@@ -4,4 +4,5 @@ export * from './commandMenu';
 export * from './dialog';
 export * from './dropdownMenu';
 export * from './separate';
+export * from './tabs';
 export * from './typography';
