@@ -3,18 +3,12 @@ import type { RequestOptions } from '@/lib';
 import { http } from '@/lib';
 import { createQueryString } from '@/utils';
 
-type GetAnimeFromSearchParams = {
-  query: string;
-  limit?: number;
-};
-
-export const getAnimeFromSearch = async (
-  { query, limit = 5 }: GetAnimeFromSearchParams,
-  options?: RequestOptions,
-) => {
+export const getNewReleases = async (limit = 6, options?: RequestOptions) => {
   const queryString = createQueryString('', {
-    q: query,
     limit: `${limit}`,
+    status: 'airing',
+    order_by: 'start_date',
+    sort: 'desc',
   });
 
   return http.get<Anime[]>(`/anime${queryString}`, {

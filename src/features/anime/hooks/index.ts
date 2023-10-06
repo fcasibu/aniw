@@ -1,1 +1,1 @@
-export * from './useGetAnimeType';
+export * from './useGetTopAnime';
