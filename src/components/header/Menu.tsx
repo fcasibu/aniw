@@ -39,9 +39,7 @@ export function Menu() {
   useEffect(() => {
     if (!triggerHandleRef.current) return;
 
-    const unsub = triggerHandleRef.current.subscribe((state) => {
-      setState(state);
-    });
+    const unsub = triggerHandleRef.current.subscribe(setState);
 
     return () => unsub();
   }, []);

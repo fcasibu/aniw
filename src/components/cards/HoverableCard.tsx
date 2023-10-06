@@ -2,13 +2,25 @@
 
 import { ONE_SECOND_IN_MS } from '@/constants';
 import { useMatchWindowSize } from '@/hooks';
-import { format, present } from '@/utils';
+import { dateFormat, dynamicImport, present } from '@/utils';
 import { Play } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { AniLink, Separate, TypographyH4, TypographyPara } from '..';
+import {
+  AniLink,
+  HoverCard,
+  HoverCardTrigger,
+  Separate,
+  TypographyH4,
+  TypographyPara,
+} from '..';
 import { Card } from './Card';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from './HoverCard';
 import type { CardProps } from './types';
+
+const { HoverCardContent } = dynamicImport(
+  () => import('./HoverCard'),
+  ['HoverCardContent'],
+  { ssr: false },
+);
 
 export function HoverableCard(props: CardProps) {
   const {
@@ -49,32 +61,37 @@ export function HoverableCard(props: CardProps) {
           </TypographyPara>
         )}
         {present(season) && (
-          <Col title="Season">
+          <Row title="Season">
             <span className="capitalize">{season}</span>
-          </Col>
+          </Row>
         )}
         {present(score) && (
-          <Col title="Score">
+          <Row title="Score">
             <span>
               {score.toFixed(2)}{' '}
               <span className="text-zinc-500">/ {scored_by} scored by</span>
             </span>
-          </Col>
+          </Row>
         )}
         {present(status) && (
-          <Col title="Status">
+          <Row title="Status">
             <span>{status}</span>
-          </Col>
+          </Row>
         )}
         {present(aired) && (
-          <Col title="Aired">
-            <span>
-              {format(aired.from)} to {aired.to ? format(aired.to) : '?'}
-            </span>
-          </Col>
+          <Row title="Aired">
+            <p>
+              <time dateTime={aired.from}>{dateFormat(aired.from)}</time> to{' '}
+              {aired.to ? (
+                <time dateTime={aired.to}>{dateFormat(aired.to)}</time>
+              ) : (
+                '?'
+              )}
+            </p>
+          </Row>
         )}
-        {present(genres) && genres.length && (
-          <Col title="Genres">
+        {present(genres) && !!genres.length && (
+          <Row title="Genres">
             <Separate className="flex flex-wrap" size={10}>
               {genres.map((genre) => (
                 <AniLink
@@ -88,7 +105,7 @@ export function HoverableCard(props: CardProps) {
                 </AniLink>
               ))}
             </Separate>
-          </Col>
+          </Row>
         )}
         <AniLink
           href={url}
@@ -102,7 +119,7 @@ export function HoverableCard(props: CardProps) {
   );
 }
 
-function Col({ children, title }: { children: ReactNode; title: ReactNode }) {
+function Row({ children, title }: { children: ReactNode; title: ReactNode }) {
   return (
     <div className="flex gap-2">
       <span className="text-xs capitalize text-zinc-400">{title}:</span>
