@@ -10,13 +10,7 @@ import 'swiper/css/a11y';
 import 'swiper/css/autoplay';
 import 'swiper/css/pagination';
 import { A11y, Autoplay, Pagination } from 'swiper/modules';
-import {
-  AniLink,
-  Button,
-  ImageWithFallback,
-  TypographyH2,
-  TypographyPara,
-} from '..';
+import { AniLink, ImageWithFallback, TypographyH2, TypographyPara } from '..';
 
 const AUTOPLAY_DELAY_IN_MS = 7000;
 
@@ -69,7 +63,6 @@ export function SeasonCarousel({ carouselItems }: CarouselProps) {
                 {item.synopsis}
               </TypographyPara>
             </div>
-            <Button asChild>Hi</Button>
             <AniLink
               href={item.url}
               className="gap-1 self-start py-1 font-bold uppercase"
