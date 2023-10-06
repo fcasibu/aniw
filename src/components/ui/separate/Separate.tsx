@@ -55,7 +55,7 @@ function separateNodes({
       <li>{node}</li>
       {index !== filteredNodes.length - 1 && (
         <li aria-hidden>
-          {<SeparatorIcon className="align-middle" size={size} />}
+          <SeparatorIcon className="align-middle" size={size} />
         </li>
       )}
     </Fragment>
