@@ -1,16 +1,13 @@
-'use client';
-
 import { ONE_SECOND_IN_MS } from '@/constants';
-import type { Anime } from '@/features';
-import { useAnimeSearch } from '@/features';
-import { useMatchWindowSize } from '@/hooks';
-import { present } from '@/utils';
+import { getAnimeFromSearch } from '@/features';
+import { useLazyQuery, useMatchWindowSize } from '@/hooks';
+import { cn, presence } from '@/utils';
 import {
   ArrowRightIcon,
   CommandIcon,
   FilterIcon,
   SearchIcon,
-  StarIcon,
+  XIcon,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -26,15 +23,15 @@ import {
   CommandList,
   CommandLoading,
   CommandSeparator,
-  ImageWithFallback,
-  Separate,
-  TypographyPara,
 } from '..';
+import { SearchItem } from './SearchItem';
 
 export function NavigationSearch() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [value, setValue] = useState('');
-  const { isLoading, items, getAnime } = useAnimeSearch();
+  const { data, isLoading, mutate } = useLazyQuery(getAnimeFromSearch);
+  const items = presence(data?.data, []);
+
   const searchBarRef = useRef<HTMLDivElement>(null);
   const [query] = useDebouncedValue(value, ONE_SECOND_IN_MS);
   const isDesktop = useMatchWindowSize('lg');
@@ -54,10 +51,13 @@ export function NavigationSearch() {
   useOutsideClick(searchBarRef, handleClose, isSearchOpen);
 
   useEffect(() => {
-    (async () => {
-      if (query.length >= 2) await getAnime(query);
-    })();
-  }, [query, getAnime]);
+    const abortController = new AbortController();
+    if (query.length >= 2) {
+      mutate({ query }, { signal: abortController.signal });
+    }
+
+    return () => abortController.abort();
+  }, [query, mutate]);
 
   return (
     <div className="relative flex gap-2">
@@ -72,7 +72,11 @@ export function NavigationSearch() {
         className="self-center"
         onClick={handleOpen}
       >
-        <SearchIcon aria-hidden size={20} />
+        {isSearchOpen ? (
+          <XIcon aria-hidden size={20} />
+        ) : (
+          <SearchIcon aria-hidden size={20} />
+        )}
       </button>
 
       {isSearchOpen &&
@@ -93,7 +97,9 @@ export function NavigationSearch() {
                     <CommandItem
                       value={item.url}
                       key={item.url}
-                      className="odd:bg-zinc-900/30"
+                      className={cn('odd:bg-zinc-900/30', {
+                        'opacity-40': isLoading,
+                      })}
                     >
                       <SearchItem {...item} />
                     </CommandItem>
@@ -101,59 +107,13 @@ export function NavigationSearch() {
                 </CommandGroup>
               </CommandList>
               <CommandSeparator />
-              {items.length > 0 && <ViewAll />}
+              {!!items.length && <ViewAll />}
             </Command>
             <SearchFooter />
           </div>,
           document.getElementById('search-root')!,
         ) as ReactNode)}
     </div>
-  );
-}
-
-function SearchItem({ title, year, images, score, type, url }: Anime) {
-  return (
-    <AniLink
-      href={url}
-      variant={null}
-      size={null}
-      className="relative flex w-full items-start justify-start gap-3"
-    >
-      <ImageWithFallback
-        aria-hidden
-        src={images.webp.image_url}
-        alt=""
-        width={50}
-        height={50}
-        className="pointer-events-none aspect-square select-none"
-      />
-      <div className="flex flex-col gap-1 text-zinc-200">
-        <TypographyPara className="line-clamp-1">{title}</TypographyPara>
-        <div className="flex items-center gap-1 text-xs text-zinc-400">
-          <Separate separator="minus" className="text-xs text-zinc-400">
-            {present(score) && (
-              <span className="flex gap-1">
-                <StarIcon aria-hidden size={14} className="fill-current" />
-                <span className="sr-only">Score: </span>
-                {score.toFixed(2)}
-              </span>
-            )}
-            {present(type) && (
-              <span>
-                <span className="sr-only">Type: </span>
-                {type.toUpperCase()}
-              </span>
-            )}
-            {present(year) && (
-              <span>
-                <span className="sr-only">Year: </span>
-                {year}
-              </span>
-            )}
-          </Separate>
-        </div>
-      </div>
-    </AniLink>
   );
 }
 
