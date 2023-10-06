@@ -1,17 +1,24 @@
-'use client';
-
+import { dynamicImport } from '@/utils';
 import { MenuIcon, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { DropdownMenuTriggerHandle, DropdownState } from '..';
-import {
-  AniLink,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
+import { AniLink, DropdownMenu, DropdownMenuTrigger } from '..';
+
+const {
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '..';
+  DropdownMenuContent,
+  DropdownMenuItem,
+} = dynamicImport(
+  () => import('..'),
+  [
+    'DropdownMenuSeparator',
+    'DropdownMenuLabel',
+    'DropdownMenuItem',
+    'DropdownMenuContent',
+  ],
+  { ssr: false },
+);
 
 const menuItems = [
   { text: 'Home', href: '/' },
@@ -52,7 +59,7 @@ export function Menu() {
           <XIcon aria-hidden size={30} />
         )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="mt-2">
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {menuItems.map(({ text, href }) => (

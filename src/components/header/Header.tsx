@@ -1,6 +1,13 @@
+'use client';
+import { dynamicImport } from '@/utils';
 import { AniLink, Logo } from '..';
 import { Menu } from './Menu';
-import { NavigationSearch } from './NavigationSearch';
+
+const { NavigationSearch } = dynamicImport(
+  () => import('./NavigationSearch'),
+  ['NavigationSearch'],
+  { ssr: false },
+);
 
 export function Header() {
   return (
