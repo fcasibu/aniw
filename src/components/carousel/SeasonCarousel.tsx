@@ -5,11 +5,11 @@ import type { Anime } from '@/features';
 import { useMatchWindowSize } from '@/hooks';
 import { breakpoints } from '@/utils';
 import { Play } from 'lucide-react';
-import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/autoplay';
 import 'swiper/css/pagination';
 import { A11y, Autoplay, Pagination } from 'swiper/modules';
+import 'swiper/swiper-bundle.css';
 import { AniLink, ImageWithFallback, TypographyH2, TypographyPara } from '..';
 
 const AUTOPLAY_DELAY_IN_MS = 7000;
