@@ -1,4 +1,4 @@
-import { SERVER_URL } from '@/constants';
+import { SERVER_API_URL } from '@/constants';
 import { RateLimit } from 'async-sema';
 import type { BasicHandler, HTTPClient, HTTPHandlers } from '.';
 
@@ -6,7 +6,7 @@ const createHTTPClient = (
   baseURL: string,
   handlers: HTTPHandlers,
 ): HTTPClient<HTTPHandlers> => {
-  const rateLimit = RateLimit(2);
+  const rateLimit = RateLimit(1);
 
   const handlerEntries = Object.entries(handlers).map(
     ([methodName, method]) => [
@@ -38,7 +38,7 @@ const createHTTPClient = (
   return Object.fromEntries(handlerEntries);
 };
 
-export const http = createHTTPClient(SERVER_URL, {
+export const http = createHTTPClient(SERVER_API_URL, {
   get: (url, init = {}) => {
     return { url, init: { ...init, method: 'GET' } };
   },
