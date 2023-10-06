@@ -23,6 +23,7 @@ export const AniLink = forwardRef<HTMLAnchorElement, LinkProps>(
           href={href}
           target="_blank"
           className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
         >
           {children}
         </a>
