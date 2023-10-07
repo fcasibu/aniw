@@ -1,7 +1,7 @@
 import { ONE_SECOND_IN_MS } from '@/constants';
 import { getAnimeFromSearch } from '@/features';
 import { useLazyQuery, useMatchWindowSize } from '@/hooks';
-import { cn, presence } from '@/utils';
+import { cn, dynamicImport, presence } from '@/utils';
 import {
   ArrowRightIcon,
   CommandIcon,
@@ -13,8 +13,10 @@ import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useDebouncedValue, useKeys, useOutsideClick } from 'rooks';
-import {
-  AniLink,
+import { AniLink } from '..';
+import { SearchItem } from './SearchItem';
+
+const {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -23,8 +25,20 @@ import {
   CommandList,
   CommandLoading,
   CommandSeparator,
-} from '..';
-import { SearchItem } from './SearchItem';
+} = dynamicImport(
+  () => import('../ui/commandMenu/CommandMenu'),
+  {
+    Command: null,
+    CommandEmpty: null,
+    CommandGroup: null,
+    CommandInput: null,
+    CommandItem: null,
+    CommandList: null,
+    CommandLoading: null,
+    CommandSeparator: null,
+  },
+  { ssr: false },
+);
 
 export function NavigationSearch() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -52,9 +66,7 @@ export function NavigationSearch() {
 
   useEffect(() => {
     const abortController = new AbortController();
-    if (query.length >= 2) {
-      mutate({ query }, { signal: abortController.signal });
-    }
+    if (query.length >= 2) mutate({ query });
 
     return () => abortController.abort();
   }, [query, mutate]);
