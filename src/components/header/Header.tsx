@@ -3,11 +3,9 @@ import { dynamicImport } from '@/utils';
 import { AniLink, Logo } from '..';
 import { Menu } from './Menu';
 
-const { NavigationSearch } = dynamicImport(
-  () => import('./NavigationSearch'),
-  ['NavigationSearch'],
-  { ssr: false },
-);
+const { NavigationSearch } = dynamicImport(() => import('./NavigationSearch'), {
+  NavigationSearch: { ssr: false },
+});
 
 export function Header() {
   return (

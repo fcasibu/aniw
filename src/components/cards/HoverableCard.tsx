@@ -16,11 +16,9 @@ import {
 import { Card } from './Card';
 import type { CardProps } from './types';
 
-const { HoverCardContent } = dynamicImport(
-  () => import('./HoverCard'),
-  ['HoverCardContent'],
-  { ssr: false },
-);
+const { HoverCardContent } = dynamicImport(() => import('./HoverCard'), {
+  HoverCardContent: null,
+});
 
 export function HoverableCard(props: CardProps) {
   const {

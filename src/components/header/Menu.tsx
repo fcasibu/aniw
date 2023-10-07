@@ -9,16 +9,12 @@ const {
   DropdownMenuSeparator,
   DropdownMenuContent,
   DropdownMenuItem,
-} = dynamicImport(
-  () => import('..'),
-  [
-    'DropdownMenuSeparator',
-    'DropdownMenuLabel',
-    'DropdownMenuItem',
-    'DropdownMenuContent',
-  ],
-  { ssr: false },
-);
+} = dynamicImport(() => import('../ui/dropdownMenu'), {
+  DropdownMenuSeparator: { ssr: false },
+  DropdownMenuItem: { ssr: false },
+  DropdownMenuContent: { ssr: false },
+  DropdownMenuLabel: { ssr: false },
+});
 
 const menuItems = [
   { text: 'Home', href: '/' },
