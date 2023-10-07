@@ -56,7 +56,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
               },
             })}
             className={cn(className, {
-              [`animate-pulse cursor-wait select-none !bg-zinc-900 [&>*]:invisible ${roundedStyling[rounded]}`]:
+              [`animate-pulse cursor-wait select-none bg-zinc-900 [&>*]:invisible ${roundedStyling[rounded]}`]:
                 isLoading,
             })}
           >
