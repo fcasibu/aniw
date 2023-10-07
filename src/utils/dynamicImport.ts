@@ -8,20 +8,12 @@ export function dynamicImport<
   T extends ComponentType<any>,
   I extends Record<K, T>,
   K extends keyof I,
->(
-  factory: () => Promise<I>,
-  modules: Record<K, DynamicOptions<I> | null>,
-): Record<K, T> {
-  const entries = Object.entries(modules) as [K, DynamicOptions<I>][];
-  return Object.create(
-    entries.reduce(
-      (result, [name, options]) => ({
-        ...result,
-        [name]: dynamic(() => factory().then((mod) => mod[name]), {
-          ...options,
-        }),
-      }),
-      {},
-    ),
-  );
+>(factory: () => Promise<I>, modules: Record<K, DynamicOptions<I> | null>) {
+  const entries = Object.entries(modules) as [K, DynamicOptions<I> | null][];
+  return Object.fromEntries(
+    entries.map(([name, options]) => [
+      name,
+      dynamic(() => factory().then((mod) => mod[name]), { ...options }),
+    ]),
+  ) as Record<K, T>;
 }
