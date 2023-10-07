@@ -6,4 +6,5 @@ export * from './dropdownMenu';
 export * from './separate';
 export * from './skeleton';
 export * from './tabs';
+export * from './tooltip';
 export * from './typography';
