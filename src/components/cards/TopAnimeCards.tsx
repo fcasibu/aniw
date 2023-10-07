@@ -3,7 +3,13 @@
 import type { AnimeFilterTypeKeys } from '@/features';
 import { CARDS_FETCH_LIMIT, filterTypeKeys, useGetTopAnime } from '@/features';
 import type { Pagination } from '@/lib';
-import { cn, createQueryString, presence } from '@/utils';
+import {
+  cn,
+  createQueryString,
+  dynamicImport,
+  normalizePagination,
+  presence,
+} from '@/utils';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
@@ -12,24 +18,16 @@ import { AnimeCards } from './AnimeCards';
 
 const DEFAULT_TYPE = 'all';
 
+const { TooltipDefault } = dynamicImport(() => import('../ui/tooltip'), {
+  TooltipDefault: { ssr: false },
+});
+
 const normalizeType = (type: AnimeFilterTypeKeys | null) => {
   if (!type) return DEFAULT_TYPE;
 
   return (
     filterTypeKeys.includes(type) ? type.toLowerCase() : DEFAULT_TYPE
   ) as AnimeFilterTypeKeys;
-};
-
-const normalizePagination = (
-  page?: string | number | null,
-  maxPage?: number,
-) => {
-  const pageNum = Number(page);
-  if (pageNum <= 0 || Number.isNaN(pageNum)) return 1;
-
-  if (maxPage) return Math.min(pageNum, maxPage);
-
-  return pageNum;
 };
 
 export function TopAnimeCards() {
@@ -128,10 +126,9 @@ function TopAnimeCardsHeader({
               variant={null}
               size={null}
               key={title}
-              prefetch={false}
               scroll={false}
               className={cn(
-                "capitalize hover:text-white aria-disabled:pointer-events-none aria-[disabled='false']:text-zinc-400 motion-safe:transition-colors",
+                'capitalize hover:opacity-100 motion-safe:transition-colors',
                 {
                   'opacity-50': title.toLowerCase() !== type,
                 },
@@ -141,30 +138,34 @@ function TopAnimeCardsHeader({
             </AniLink>
           ))}
         </Separate>
-        <AniLink
-          href={createQueryString('', { type, page: `${currentPage - 1}` })}
-          scroll={false}
-          variant={null}
-          size={null}
-          aria-label="Previous Page"
-          className="capitalize hover:text-white aria-disabled:pointer-events-none aria-disabled:opacity-40 motion-safe:transition-colors"
-          aria-disabled={isFirstPage}
-          {...(isFirstPage && { tabIndex: -1 })}
-        >
-          <ChevronLeftIcon aria-hidden size={18} />
-        </AniLink>
-        <AniLink
-          href={createQueryString('', { type, page: `${currentPage + 1}` })}
-          scroll={false}
-          variant={null}
-          size={null}
-          aria-label="Next Page"
-          className="capitalize hover:text-white aria-disabled:pointer-events-none aria-disabled:opacity-40 motion-safe:transition-colors"
-          aria-disabled={isLastPage}
-          {...(isLastPage && { tabIndex: -1 })}
-        >
-          <ChevronRightIcon aria-hidden size={18} />
-        </AniLink>
+        <TooltipDefault text={`Page ${currentPage - 1}`}>
+          <AniLink
+            href={createQueryString('', { type, page: `${currentPage - 1}` })}
+            scroll={false}
+            variant={null}
+            size={null}
+            aria-label="Previous Page"
+            className="capitalize hover:text-white aria-disabled:pointer-events-none aria-disabled:opacity-40 motion-safe:transition-colors"
+            aria-disabled={isFirstPage}
+            {...(isFirstPage && { tabIndex: -1 })}
+          >
+            <ChevronLeftIcon aria-hidden size={18} />
+          </AniLink>
+        </TooltipDefault>
+        <TooltipDefault text={`Page ${currentPage + 1}`}>
+          <AniLink
+            href={createQueryString('', { type, page: `${currentPage + 1}` })}
+            scroll={false}
+            variant={null}
+            size={null}
+            aria-label="Next Page"
+            className="capitalize hover:text-white aria-disabled:pointer-events-none aria-disabled:opacity-40 motion-safe:transition-colors"
+            aria-disabled={isLastPage}
+            {...(isLastPage && { tabIndex: -1 })}
+          >
+            <ChevronRightIcon aria-hidden size={18} />
+          </AniLink>
+        </TooltipDefault>
       </div>
     </div>
   );
